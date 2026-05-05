@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G.U.A.R.D. System - Complete Demo</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="demo-container">
+
+    <!-- Phone Mockup -->
+    <div class="phone-mockup">
+      <div class="phone-screen">
+
+        <!-- Screen 0: Login with FIDO2 -->
+        <div class="screen active" id="screen0">
+          <div class="status-bar">
+            <span>10:20</span>
+            <span>4G 78%</span>
+          </div>
+          <div class="app-header">
+            <div></div>
+            <div class="logo-section">
+              <span class="yono-text">yono</span>
+              <span>🔵</span>
+              <span style="font-weight: 600; font-size: 18px;">SBI</span>
+            </div>
+            <div></div>
+          </div>
+          <div class="page-title">
+            <h1>Secure Login</h1>
+          </div>
+          <div class="content content-center">
+            <div class="biometric-icon">🔐</div>
+            <h2 style="text-align: center; font-size: 22px; margin-bottom: 12px; color: #1C3F7A;">Device-Bound Authentication</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 32px; line-height: 1.6; font-size: 14px;">
+              G.U.A.R.D. uses biometric + FIDO2 authentication. Only your trusted device can access this account.
+            </p>
+
+            <div class="info-card" style="margin-bottom: 24px;">
+              <div style="font-weight: 600; margin-bottom: 8px; color: #1565C0;">🛡️ How It Works</div>
+              <div style="font-size: 12px; color: #424242;">
+                • Biometric verification (fingerprint/face)<br>
+                • FIDO2 hardware key validation<br>
+                • Device origin verification<br>
+                • Stolen credentials won't work on untrusted devices
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label>Username</label>
+              <input type="text" value="priya.sharma@sbi" readonly>
+            </div>
+
+            <button class="btn btn-primary" onclick="simulateBiometricAuth()" id="authBtn">
+              <span id="authBtnText">🔐 Authenticate with Biometric + FIDO2</span>
+            </button>
+
+            <div style="background: #FFF3E0; border-radius: 8px; padding: 12px; margin-top: 20px; text-align: center; font-size: 13px; color: #C2410C;">
+              ⚠️ <strong>Demo Note:</strong> In production, this prevents scammer login even with stolen passwords
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 1: Transfer Form -->
+        <div class="screen" id="screen1">
+          <div class="status-bar">
+            <span>10:24</span>
+            <span>4G 78%</span>
+          </div>
+          <div class="app-header">
+            <div>☰</div>
+            <div class="logo-section">
+              <span class="yono-text">yono</span>
+              <span>🔵</span>
+              <span style="font-weight: 600; font-size: 18px;">SBI</span>
+            </div>
+            <div style="font-size: 13px;">Log Out</div>
+          </div>
+          <div class="page-title">
+            <h1>Transfer Money</h1>
+          </div>
+          <div class="content">
+            <div class="user-info-badge">
+              <div class="user-avatar" id="userAvatar">PS</div>
+              <div style="flex: 1;">
+                <div style="font-weight: 600; font-size: 14px;" id="userName">Priya Sharma</div>
+                <div style="font-size: 12px; color: #666;" id="userAge">Age: 42 years</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>From Account</label>
+              <input type="text" value="XXXX XXXX 1234" readonly>
+              <div style="font-size: 12px; color: #666; margin-top: 4px;">Savings - ₹1,23,456.78</div>
+            </div>
+            <div class="form-group">
+              <label>Beneficiary Name</label>
+              <input type="text" value="RAJESH KUMAR" readonly>
+            </div>
+            <div class="form-group">
+              <label>Account Number</label>
+              <input type="text" value="123456789012" readonly>
+            </div>
+            <div class="form-group">
+              <label>IFSC Code</label>
+              <input type="text" value="SBIN0001234" readonly>
+            </div>
+            <div class="form-group">
+              <label>Amount</label>
+              <input type="text" value="₹ 75,000" readonly style="font-size: 20px; font-weight: 600;">
+            </div>
+            <button class="btn btn-primary" onclick="initiateTransfer()">Proceed with Transfer</button>
+          </div>
+        </div>
+
+        <!-- Screen 2: Risk Detection -->
+        <div class="screen" id="screen2">
+          <div class="status-bar">
+            <span>10:24</span>
+            <span>4G 78%</span>
+          </div>
+          <div class="app-header">
+            <div>☰</div>
+            <div class="logo-section">
+              <span class="yono-text">yono</span>
+              <span>🔵</span>
+              <span style="font-weight: 600; font-size: 18px;">SBI</span>
+            </div>
+            <div style="font-size: 13px;">Log Out</div>
+          </div>
+          <div class="page-title">
+            <h1>Security Alert</h1>
+          </div>
+          <div class="content">
+            <div class="warning-card">
+              <div class="warning-icon">⚠️</div>
+              <div style="font-size: 18px; font-weight: 600; color: #C2410C; margin-bottom: 4px;">HIGH RISK TRANSACTION</div>
+              <div style="font-size: 13px; color: #78350F; margin-bottom: 2px;">DETECTED</div>
+              <div style="font-size: 12px; color: #92400E;">Additional verification required</div>
+            </div>
+
+            <div class="transaction-details">
+              <div style="font-size: 12px; color: #666; margin-bottom: 10px;">Transaction Details</div>
+              <div class="detail-row">
+                <span class="detail-label">Beneficiary</span>
+                <span class="detail-value">RAJESH KUMAR</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Account</span>
+                <span class="detail-value">123456789012</span>
+              </div>
+              <div style="border-top: 1px solid #E0E0E0; margin: 10px 0; padding-top: 10px;">
+                <div class="detail-row">
+                  <span class="detail-label">Amount</span>
+                  <span class="amount-display">₹ 75,000</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="risk-score-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 14px; font-weight: 600;">Risk Score</span>
+                <span style="font-size: 26px; font-weight: 700; color: #D32F2F;">95/100</span>
+              </div>
+              <div style="background: #FFEBEE; border-radius: 6px; height: 8px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #F44336 0%, #D32F2F 100%); height: 100%; width: 95%; border-radius: 6px;"></div>
+              </div>
+              <div style="font-size: 11px; color: #D32F2F; margin-top: 6px; font-weight: 500;">● CRITICAL RISK LEVEL</div>
+            </div>
+
+            <div id="rbiDelaySection"></div>
+
+            <div class="info-card">
+              <div style="font-weight: 600; margin-bottom: 8px;">Why was this flagged?</div>
+              <div>• First time transaction to beneficiary</div>
+              <div>• Amount exceeds usual transfer limit</div>
+              <div>• Transaction from new location</div>
+            </div>
+
+            <div id="actionButtonsSection"></div>
+          </div>
+        </div>
+
+        <!-- Screen 3: Family Notification -->
+        <div class="screen" id="screen3">
+          <div class="status-bar" style="background: #000;">
+            <span style="color: white;">9:41</span>
+            <span style="color: white;">5G 🔋</span>
+          </div>
+          <div class="lockscreen-bg">
+            <div class="lockscreen-time">9:41</div>
+            <div style="font-size: 16px; font-weight: 500; color: rgba(255,255,255,0.7);">Tuesday, May 5</div>
+          </div>
+          <div style="padding: 20px; background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%); flex: 1;">
+            <div class="notification-card">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #2B5AA8 0%, #1C3F7A 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center;">🔵</div>
+                <div style="flex: 1;">
+                  <div style="font-size: 14px; font-weight: 600;">SBI YONO G.U.A.R.D.</div>
+                  <div style="font-size: 12px; opacity: 0.6;">now</div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display: inline-block; background: #FF6B35; color: white; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 6px; margin-bottom: 10px;">
+                  APPROVAL REQUIRED
+                </div>
+                <div style="font-size: 15px; line-height: 1.5; margin-bottom: 8px;" id="familyNotifText">
+                  Your mother Priya is transferring <span style="font-weight: 700;">₹75,000</span> to unknown account.
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 10px;">
+                  <span style="font-size: 13px; opacity: 0.7;">Risk Score:</span>
+                  <span style="background: #DC2626; color: white; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 4px;">HIGH (95/100)</span>
+                </div>
+                <div style="font-size: 13px; opacity: 0.85;">
+                  🔐 Tap to approve with Face ID
+                </div>
+              </div>
+
+              <div class="action-buttons" style="margin-top: 12px;">
+                <button class="btn" style="flex: 1; background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px; font-size: 14px;" onclick="declineTransaction()">
+                  Decline
+                </button>
+                <button class="btn" style="flex: 1; background: #FF6B35; color: white; padding: 10px; font-size: 14px;" onclick="approveFamilyNotification()">
+                  Review & Approve
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 4: Emergency Override -->
+        <div class="screen" id="screen4">
+          <div class="status-bar">
+            <span>10:25</span>
+            <span>4G 78%</span>
+          </div>
+          <div class="app-header">
+            <div>☰</div>
+            <div class="logo-section">
+              <span class="yono-text">yono</span>
+              <span>🔵</span>
+              <span style="font-weight: 600; font-size: 18px;">SBI</span>
+            </div>
+            <div style="font-size: 13px;">Log Out</div>
+          </div>
+          <div class="page-title">
+            <h1>Emergency Override</h1>
+          </div>
+          <div class="content content-center">
+            <div class="warning-card">
+              <div class="warning-icon">⏱️</div>
+              <div style="font-size: 18px; font-weight: 600; color: #C2410C; margin-bottom: 4px;">1-HOUR RBI DELAY</div>
+              <div style="font-size: 13px; color: #78350F; margin-bottom: 2px;">Currently Active</div>
+              <div style="font-size: 12px; color: #92400E;">For transactions > ₹10,000</div>
+            </div>
+
+            <div class="countdown-timer">
+              <div style="font-size: 12px; color: rgba(255,255,255,0.85);">TIME REMAINING</div>
+              <div class="countdown-display" id="countdown">59:47</div>
+              <div style="font-size: 12px; color: rgba(255,255,255,0.9);">Mandatory waiting period</div>
+            </div>
+
+            <div class="info-card" style="margin-bottom: 20px;">
+              <div style="font-weight: 600; margin-bottom: 8px; color: #1565C0;">🚨 Emergency Override Available</div>
+              <div style="font-size: 12px; color: #424242;">
+                For genuine emergencies, you can override the delay using:<br>
+                • Biometric verification<br>
+                • FIDO2 device authentication<br>
+                • Additional security challenge
+              </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="initiateEmergencyOverride()" style="margin-bottom: 12px;">
+              🔐 Use Emergency Override
+            </button>
+
+            <button class="btn btn-secondary" onclick="cancelTransaction()">
+              Cancel Transaction
+            </button>
+
+            <div style="background: #FFF3E0; border-radius: 8px; padding: 12px; margin-top: 20px; text-align: center; font-size: 12px; color: #C2410C;">
+              ⚠️ Override requires device-bound authentication to prevent scammer access
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 5: Success -->
+        <div class="screen" id="screen5">
+          <div class="status-bar">
+            <span>10:26</span>
+            <span>4G 78%</span>
+          </div>
+          <div class="app-header">
+            <div>☰</div>
+            <div class="logo-section">
+              <span class="yono-text">yono</span>
+              <span>🔵</span>
+              <span style="font-weight: 600; font-size: 18px;">SBI</span>
+            </div>
+            <div style="font-size: 13px;">Log Out</div>
+          </div>
+          <div class="page-title">
+            <h1>Transaction Status</h1>
+          </div>
+          <div class="content content-center">
+            <div style="width: 100px; height: 100px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+              <span style="font-size: 50px; color: white;">✓</span>
+            </div>
+            <h2 style="font-size: 24px; color: #2E7D32; margin-bottom: 12px; text-align: center;">Transaction Approved!</h2>
+            <p style="font-size: 15px; color: #666; margin-bottom: 24px; line-height: 1.6; text-align: center;" id="successMessage">
+              Your transaction has been successfully verified and completed.
+            </p>
+            <div style="background: #F1F8E9; border-radius: 12px; padding: 20px; width: 100%; margin-bottom: 24px;">
+              <div style="font-size: 13px; color: #666; margin-bottom: 4px; text-align: center;">Amount Transferred</div>
+              <div style="font-size: 32px; font-weight: 700; color: #2E7D32; text-align: center;">₹ 75,000</div>
+              <div style="font-size: 13px; color: #666; margin-top: 8px; text-align: center;">To: RAJESH KUMAR</div>
+            </div>
+            <div style="background: #E3F2FD; border-radius: 8px; padding: 16px; width: 100%; text-align: left; margin-bottom: 20px;">
+              <div style="font-size: 13px; font-weight: 600; color: #1565C0; margin-bottom: 8px;">🛡️ G.U.A.R.D. Protection Applied</div>
+              <div style="font-size: 12px; color: #424242; line-height: 1.6;" id="protectionDetails">
+                Multi-layer security verification completed including risk analysis, device authentication, and approval workflow.
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="resetDemo()">Start New Demo</button>
+          </div>
+        </div>
+
+        <!-- Screen 6: Transaction Cancelled (self-cancel for below60 or elderly) -->
+        <div class="screen" id="screen6">
+          <div class="status-bar">
+            <span>10:25</span>
+            <span>4G 78%</span>
+          </div>
+          <div class="app-header">
+            <div>☰</div>
+            <div class="logo-section">
+              <span class="yono-text">yono</span>
+              <span>🔵</span>
+              <span style="font-weight: 600; font-size: 18px;">SBI</span>
+            </div>
+            <div style="font-size: 13px;">Log Out</div>
+          </div>
+          <div class="page-title">
+            <h1>Transaction Status</h1>
+          </div>
+          <div class="content content-center">
+            <div class="cancelled-icon">✕</div>
+            <h2 style="font-size: 22px; color: #D32F2F; margin-bottom: 12px; text-align: center;">Transaction Cancelled</h2>
+            <p style="font-size: 14px; color: #666; margin-bottom: 20px; line-height: 1.6; text-align: center;" id="cancelMessage">
+              You have cancelled the ₹75,000 transfer. No money has been sent.
+            </p>
+            <div style="background: #FFEBEE; border-radius: 12px; padding: 20px; width: 100%; margin-bottom: 20px;">
+              <div style="font-size: 12px; color: #999; margin-bottom: 4px; text-align: center;">Amount NOT Sent</div>
+              <div style="font-size: 28px; font-weight: 700; color: #D32F2F; text-align: center; text-decoration: line-through;">₹ 75,000</div>
+              <div style="font-size: 12px; color: #999; margin-top: 8px; text-align: center;">To: RAJESH KUMAR</div>
+            </div>
+            <div id="cancelProtectionDetails" style="background: #E3F2FD; border-radius: 8px; padding: 14px; width: 100%; margin-bottom: 20px;">
+              <div style="font-size: 13px; font-weight: 600; color: #1565C0; margin-bottom: 8px;">🛡️ G.U.A.R.D. Protection Applied</div>
+              <div style="font-size: 12px; color: #424242; line-height: 1.6;">
+                Transaction blocked before processing. Your funds remain safe in your account.
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="resetDemo()">Start New Demo</button>
+          </div>
+        </div>
+
+        <!-- Screen 7: Family Declined — Notification to Elderly User -->
+        <div class="screen" id="screen7">
+          <div class="status-bar" style="background: #000;">
+            <span style="color: white;">9:45</span>
+            <span style="color: white;">5G 🔋</span>
+          </div>
+          <div class="lockscreen-bg" style="padding: 28px 20px;">
+            <div class="lockscreen-time">9:45</div>
+            <div style="font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.7);">Tuesday, May 5</div>
+          </div>
+          <div style="padding: 16px; background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%); flex: 1; overflow-y: auto;">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 10px; text-align: center; text-transform: uppercase; letter-spacing: 1px;">
+              📱 Kamala Devi's Device
+            </div>
+            <div class="notification-card" style="margin-bottom: 12px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #2B5AA8 0%, #1C3F7A 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🔵</div>
+                <div style="flex: 1;">
+                  <div style="font-size: 13px; font-weight: 600; color: white;">SBI YONO G.U.A.R.D.</div>
+                  <div style="font-size: 11px; color: rgba(255,255,255,0.5);">now</div>
+                </div>
+              </div>
+              <div>
+                <div style="display: inline-block; background: #D32F2F; color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 6px; margin-bottom: 10px;">
+                  TRANSACTION BLOCKED
+                </div>
+                <div style="font-size: 14px; line-height: 1.6; margin-bottom: 8px; color: white;">
+                  Your trusted family member has <span style="font-weight: 700; color: #FCA5A5;">blocked</span> the ₹75,000 transfer to RAJESH KUMAR.
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.8); margin-bottom: 8px;">
+                  🔒 Your money is safe. ₹75,000 has NOT been transferred.
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 12px; color: rgba(255,255,255,0.6);">Risk Score:</span>
+                  <span style="background: #DC2626; color: white; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px;">HIGH (95/100)</span>
+                </div>
+              </div>
+            </div>
+            <div style="background: rgba(255,235,59,0.1); border-radius: 12px; padding: 14px; border: 0.5px solid rgba(255,235,59,0.25); margin-bottom: 14px;">
+              <div style="font-size: 12px; font-weight: 600; color: #FCD34D; margin-bottom: 6px;">💛 Your Family is Protecting You</div>
+              <div style="font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.6;">
+                If this was a genuine transaction, speak with your family member directly and retry with their approval.
+              </div>
+            </div>
+            <button class="btn" onclick="resetDemo()" style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.25); font-size: 14px;">
+              Start New Demo
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+      <h2>🛡️ G.U.A.R.D. System Demo</h2>
+      <p style="color: #666; margin-bottom: 16px; line-height: 1.6; font-size: 14px;">
+        Complete fraud prevention system with age-based workflows and device-bound authentication.
+      </p>
+
+      <div class="scenario-selector">
+        <div style="font-weight: 600; color: #2E7D32; margin-bottom: 8px; font-size: 15px;">Choose User Scenario</div>
+        <div style="font-size: 13px; color: #666; margin-bottom: 12px;">
+          Flow changes based on user age (RBI guidelines)
+        </div>
+        <div class="scenario-buttons">
+          <button class="scenario-btn active" onclick="setScenario('below60')" id="btnBelow60">
+            👤 Below 60<br><span style="font-size: 12px; font-weight: 400;">1-hour delay</span>
+          </button>
+          <button class="scenario-btn" onclick="setScenario('elderly')" id="btnElderly">
+            👵 Elderly (60+)<br><span style="font-size: 12px; font-weight: 400;">Family approval</span>
+          </button>
+        </div>
+      </div>
+
+      <div style="font-weight: 600; color: #1C3F7A; margin-bottom: 12px; font-size: 15px;">System Flow</div>
+
+      <div class="flow-steps" id="flowSteps">
+        <!-- Populated by JavaScript -->
+      </div>
+
+      <div style="background: #FFF3E0; border-left: 4px solid #FF6B35; border-radius: 8px; padding: 16px; margin-top: 24px;">
+        <div style="font-weight: 600; color: #C2410C; margin-bottom: 8px;">🔒 Key Innovations</div>
+        <ul style="margin-left: 20px; font-size: 13px; color: #78350F; line-height: 1.8;">
+          <li><strong>FIDO2 + Biometric:</strong> Stops scammers with stolen credentials</li>
+          <li><strong>Age-based workflow:</strong> Elderly → Family approval</li>
+          <li><strong>RBI compliance:</strong> 1-hour delay for >₹10k</li>
+          <li><strong>Emergency override:</strong> Device-bound authentication</li>
+          <li><strong>ML risk scoring:</strong> Real-time fraud detection</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
