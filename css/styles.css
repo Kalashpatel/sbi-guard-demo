@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -100,6 +104,22 @@ body {
   overflow-y: auto;
   padding: 20px;
   background: #f8f9fa;
+  /* Thin, subtle scrollbar inside the phone UI */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+.content::-webkit-scrollbar {
+  width: 3px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
 }
 
 .content-center {
@@ -458,14 +478,306 @@ body {
   border-color: #B71C1C;
 }
 
+/* ── Tablet landscape ── */
+@media (max-width: 1100px) {
+  .demo-container {
+    gap: 20px;
+  }
+
+  .controls-panel {
+    padding: 24px;
+  }
+}
+
+/* ── Tablet portrait and below: stack the two columns ── */
 @media (max-width: 900px) {
+  body {
+    align-items: flex-start;
+    padding: 16px;
+  }
+
   .demo-container {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .phone-mockup {
     position: relative;
     top: 0;
+    width: 100%;
+    max-width: 400px;
     margin: 0 auto;
+  }
+
+  /* Let the phone screen scale proportionally instead of overflowing */
+  .phone-screen {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 376 / 700;
+  }
+
+  .controls-panel {
+    padding: 20px;
+  }
+
+  .controls-panel h2 {
+    font-size: 20px;
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  .demo-container {
+    gap: 14px;
+  }
+
+  .phone-mockup {
+    border-radius: 22px;
+    padding: 8px;
+  }
+
+  .phone-screen {
+    border-radius: 16px;
+  }
+
+  .controls-panel {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .controls-panel h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .scenario-selector {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .scenario-btn {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+
+  .flow-steps {
+    gap: 8px;
+  }
+
+  .flow-step {
+    padding: 10px 12px;
+    gap: 10px;
+    border-radius: 10px;
+  }
+
+  .step-number {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-size: 13px;
+  }
+
+  .step-desc {
+    font-size: 11px;
+  }
+
+  /* Key innovations list — prevent overflow on narrow panels */
+  .controls-panel ul {
+    margin-left: 14px;
+  }
+
+  .controls-panel li {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  /* ── Phone-internal element scaling ──
+     The phone narrows to ~330-360px on a 375px phone.
+     Reduce large fixed-size elements so they don't crowd the layout. */
+
+  .content {
+    padding: 14px;
+  }
+
+  .form-group {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .biometric-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+    margin-bottom: 14px;
+  }
+
+  .cancelled-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 38px;
+    margin-bottom: 14px;
+  }
+
+  .warning-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .countdown-display {
+    font-size: 26px;
+  }
+
+  .lockscreen-bg {
+    padding: 24px 16px;
+  }
+
+  .lockscreen-time {
+    font-size: 56px;
+  }
+}
+
+/* ── Small mobile (≤ 400px): tighten everything further ── */
+@media (max-width: 400px) {
+  body {
+    padding: 8px;
+  }
+
+  .phone-mockup {
+    border-radius: 18px;
+    padding: 6px;
+  }
+
+  .phone-screen {
+    border-radius: 13px;
+  }
+
+  .controls-panel {
+    padding: 12px;
+  }
+
+  .controls-panel h2 {
+    font-size: 16px;
+  }
+
+  .scenario-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .scenario-btn {
+    font-size: 13px;
+  }
+
+  .biometric-icon {
+    width: 68px;
+    height: 68px;
+    font-size: 34px;
+  }
+
+  .cancelled-icon {
+    width: 68px;
+    height: 68px;
+    font-size: 32px;
+  }
+
+  .warning-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .lockscreen-time {
+    font-size: 48px;
+  }
+}
+
+/* ── Landscape phone: switch back to side-by-side with a compact phone ──
+   Targets phones rotated sideways (width ≤ 900px, height ≤ 500px).
+   Without this the 700px phone would dwarf the ~360px landscape viewport. */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  body {
+    padding: 8px;
+    align-items: flex-start;
+  }
+
+  .demo-container {
+    grid-template-columns: 208px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .phone-mockup {
+    position: sticky;
+    top: 8px;
+    width: 208px;
+    max-width: 208px;
+    margin: 0;
+    border-radius: 20px;
+    padding: 8px;
+  }
+
+  /* 192px wide → aspect-ratio gives ≈ 358px tall — fits a landscape viewport */
+  .phone-screen {
+    width: 192px;
+    height: auto;
+    aspect-ratio: 376 / 700;
+    border-radius: 14px;
+  }
+
+  .controls-panel {
+    padding: 14px;
+    max-height: calc(100vh - 16px);
+    overflow-y: auto;
+    border-radius: 12px;
+  }
+
+  .controls-panel h2 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .scenario-selector {
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+
+  .scenario-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .scenario-btn {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .flow-steps {
+    gap: 6px;
+  }
+
+  .flow-step {
+    padding: 8px 10px;
+    border-radius: 8px;
+  }
+
+  .step-number {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .step-title {
+    font-size: 12px;
+  }
+
+  .step-desc {
+    font-size: 10px;
   }
 }
