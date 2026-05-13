@@ -478,6 +478,74 @@ body {
   border-color: #B71C1C;
 }
 
+/* ── Cognitive Challenge (Screen 8) ── */
+
+.challenge-card {
+  background: white;
+  border: 2px solid #E3F2FD;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.challenge-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.challenge-option {
+  width: 100%;
+  padding: 13px 16px;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  background: #F8F9FA;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.challenge-option:hover:not(:disabled) {
+  border-color: #2B5AA8;
+  background: #EEF2FF;
+  color: #1C3F7A;
+}
+
+.challenge-option.correct {
+  border-color: #4CAF50;
+  background: #E8F5E9;
+  color: #2E7D32;
+  cursor: default;
+}
+
+.challenge-option.wrong {
+  border-color: #EF5350;
+  background: #FFEBEE;
+  color: #C62828;
+  cursor: default;
+}
+
+.challenge-option:disabled {
+  cursor: not-allowed;
+}
+
+.attempt-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #2B5AA8;
+  transition: background 0.2s;
+}
+
+.attempt-dot.used {
+  background: #EF5350;
+}
+
 /* ── Tablet landscape ── */
 @media (max-width: 1100px) {
   .demo-container {

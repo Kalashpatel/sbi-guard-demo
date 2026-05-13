@@ -208,14 +208,17 @@
                   APPROVAL REQUIRED
                 </div>
                 <div style="font-size: 15px; line-height: 1.5; margin-bottom: 8px;" id="familyNotifText">
-                  Your mother Priya is transferring <span style="font-weight: 700;">₹75,000</span> to unknown account.
+                  Your mother Kamala has initiated a <span style="font-weight: 700; color: #FF6B35;">HIGH-RISK transaction</span> to an unknown account.
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.65); margin-bottom: 8px; line-height: 1.5;">
+                  Transaction details are hidden for security. Verify your identity inside the app to review the full amount.
                 </div>
                 <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 10px;">
                   <span style="font-size: 13px; opacity: 0.7;">Risk Score:</span>
                   <span style="background: #DC2626; color: white; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 4px;">HIGH (95/100)</span>
                 </div>
                 <div style="font-size: 13px; opacity: 0.85;">
-                  🔐 Tap to approve with Face ID
+                  🔐 Verify identity to review details
                 </div>
               </div>
 
@@ -223,8 +226,8 @@
                 <button class="btn" style="flex: 1; background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px; font-size: 14px;" onclick="declineTransaction()">
                   Decline
                 </button>
-                <button class="btn" style="flex: 1; background: #FF6B35; color: white; padding: 10px; font-size: 14px;" onclick="approveFamilyNotification()">
-                  Review & Approve
+                <button class="btn" style="flex: 1; background: #FF6B35; color: white; padding: 10px; font-size: 14px;" onclick="startFamilyVerification()">
+                  Verify & Review
                 </button>
               </div>
             </div>
@@ -273,8 +276,8 @@
               </div>
             </div>
 
-            <button class="btn btn-primary" onclick="initiateEmergencyOverride()" style="margin-bottom: 12px;">
-              🔐 Use Emergency Override
+            <button class="btn btn-primary" onclick="startCognitiveChallenge()" style="margin-bottom: 12px;">
+              🧠 Cognitive Challenge + Override
             </button>
 
             <button class="btn btn-secondary" onclick="cancelTransaction()">
@@ -414,6 +417,143 @@
             <button class="btn" onclick="resetDemo()" style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.25); font-size: 14px;">
               Start New Demo
             </button>
+          </div>
+        </div>
+
+        <!-- Screen 8: Cognitive Challenge (Below 60 — Emergency Override gate) -->
+        <div class="screen" id="screen8">
+          <div class="status-bar">
+            <span>10:25</span>
+            <span>4G 78%</span>
+          </div>
+          <div class="app-header">
+            <div>☰</div>
+            <div class="logo-section">
+              <span class="yono-text">yono</span>
+              <span>🔵</span>
+              <span style="font-weight: 600; font-size: 18px;">SBI</span>
+            </div>
+            <div style="font-size: 13px;">Log Out</div>
+          </div>
+          <div class="page-title">
+            <h1>Security Verification</h1>
+          </div>
+          <div class="content">
+
+            <!-- Why this challenge exists -->
+            <div class="info-card" style="background: #EDE7F6; border-left: 4px solid #7B1FA2; margin-bottom: 16px;">
+              <div style="font-weight: 600; color: #4A148C; margin-bottom: 6px; font-size: 13px;">🧠 G.U.A.R.D. Cognitive Verification</div>
+              <div style="font-size: 12px; color: #4A148C; line-height: 1.6;">
+                Before overriding, please answer a simple question. This confirms you are making this decision <strong>freely and independently</strong> — not under pressure from anyone.
+              </div>
+            </div>
+
+            <!-- Challenge card (populated by JS) -->
+            <div class="challenge-card" id="challengeCard">
+              <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; margin-bottom: 10px;">Answer to continue</div>
+              <div id="challengeQuestion" style="font-size: 17px; font-weight: 600; color: #1C3F7A; margin-bottom: 18px; line-height: 1.5; white-space: pre-line;"></div>
+              <div id="challengeOptions" class="challenge-options"></div>
+              <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                <span style="font-size: 11px; color: #888;">Attempts left:</span>
+                <div id="attemptDots" style="display: flex; gap: 6px;"></div>
+              </div>
+              <div id="challengeResult" style="font-size: 13px; font-weight: 600; min-height: 20px; margin-top: 10px;"></div>
+            </div>
+
+            <!-- Scam warning -->
+            <div style="background: #FFFDE7; border: 2px solid #F59E0B; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+              <div style="font-size: 13px; font-weight: 700; color: #92400E; margin-bottom: 6px;">⚠️ Scam Alert — Stop and Think</div>
+              <div style="font-size: 12px; color: #78350F; line-height: 1.7;">
+                If <strong>anyone</strong> — a caller, WhatsApp contact, or someone claiming to be from a bank or government — is pressuring you to transfer this money urgently, <strong>it is a scam.</strong> Genuine officials never ask for urgent transfers.
+              </div>
+              <div style="margin-top: 10px; background: #FEF3C7; border-radius: 6px; padding: 8px 12px; font-size: 12px; color: #92400E; font-weight: 700; text-align: center;">
+                📞 National Cyber Crime Helpline: <span style="font-size: 15px; letter-spacing: 1px;">1930</span>
+              </div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="cancelTransaction()">Cancel Transaction</button>
+          </div>
+        </div>
+
+        <!-- Screen 9: Family Member Verification (Biometric + FIDO2 → Cognitive Challenge) -->
+        <div class="screen" id="screen9">
+          <div class="status-bar">
+            <span>9:42</span>
+            <span>5G 🔋</span>
+          </div>
+          <div class="app-header">
+            <div>☰</div>
+            <div class="logo-section">
+              <span class="yono-text">yono</span>
+              <span>🔵</span>
+              <span style="font-weight: 600; font-size: 18px;">SBI</span>
+            </div>
+            <div style="font-size: 13px;">Log Out</div>
+          </div>
+          <div class="page-title">
+            <h1>Family Verification</h1>
+          </div>
+          <div class="content">
+
+            <!-- Who is verifying -->
+            <div class="info-card" style="background: #E8F5E9; border-left: 4px solid #4CAF50; margin-bottom: 14px;">
+              <div style="font-weight: 600; color: #1B5E20; margin-bottom: 5px; font-size: 13px;">👨‍👩‍👧 Trusted Contact Verification</div>
+              <div style="font-size: 12px; color: #2E7D32; line-height: 1.6;">
+                You are the registered trusted contact for <strong>Kamala Devi</strong>. Verify your identity to review this transaction.
+              </div>
+            </div>
+
+            <!-- Transaction summary — amount masked until biometric passes -->
+            <div style="background: #F8F9FA; border-radius: 10px; padding: 14px; margin-bottom: 14px; border: 1.5px solid #E0E0E0;">
+              <div style="font-size: 11px; color: #888; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">Transaction Details</div>
+              <div class="detail-row" style="font-size: 13px;"><span class="detail-label">Initiated by</span><span class="detail-value">Kamala Devi (68 yrs)</span></div>
+              <div class="detail-row" style="font-size: 13px;"><span class="detail-label">Beneficiary</span><span class="detail-value">RAJESH KUMAR</span></div>
+              <div class="detail-row" style="font-size: 13px;"><span class="detail-label">Account</span><span class="detail-value">123456789012</span></div>
+              <div style="border-top: 1px solid #E0E0E0; margin: 10px 0 8px; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; color: #666;">Amount</span>
+                <span id="familyAmountDisplay" style="font-size: 20px; font-weight: 700; color: #C2410C; letter-spacing: 2px;">₹ **,***</span>
+              </div>
+              <div class="detail-row" style="font-size: 13px;">
+                <span class="detail-label">Risk Score</span>
+                <span style="background: #DC2626; color: white; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px;">HIGH (95/100)</span>
+              </div>
+            </div>
+
+            <!-- STEP 1: Biometric + FIDO2 (visible initially) -->
+            <div id="familyBioStep">
+              <div class="info-card" style="margin-bottom: 14px;">
+                <div style="font-weight: 600; color: #1565C0; margin-bottom: 5px; font-size: 13px;">Step 1 of 2 — Identity Verification</div>
+                <div style="font-size: 12px; color: #424242; line-height: 1.6;">
+                  Authenticate with Biometric + FIDO2 to reveal the full transaction amount and proceed to review.
+                </div>
+              </div>
+              <button class="btn btn-primary" id="familyAuthBtn" onclick="startFamilyBiometricAuth()" style="margin-bottom: 10px;">
+                🔐 Verify with Biometric + FIDO2
+              </button>
+              <button class="btn btn-secondary" onclick="declineTransaction()">Decline Transaction</button>
+            </div>
+
+            <!-- STEP 2: Cognitive Challenge (hidden until biometric passes) -->
+            <div id="familyChallengeStep" style="display: none;">
+              <div class="info-card" style="background: #EDE7F6; border-left: 4px solid #7B1FA2; margin-bottom: 14px;">
+                <div style="font-weight: 600; color: #4A148C; margin-bottom: 5px; font-size: 13px;">🧠 Step 2 of 2 — Cognitive Verification</div>
+                <div style="font-size: 12px; color: #4A148C; line-height: 1.6;">
+                  Answer this question to confirm you are reviewing this transaction freely and independently.
+                </div>
+              </div>
+              <div class="challenge-card" id="familyChallengeCard">
+                <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; margin-bottom: 10px;">Answer to approve</div>
+                <div id="familyChallengeQuestion" style="font-size: 16px; font-weight: 600; color: #1C3F7A; margin-bottom: 16px; line-height: 1.5; white-space: pre-line;"></div>
+                <div id="familyChallengeOptions" class="challenge-options"></div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                  <span style="font-size: 11px; color: #888;">Attempts left:</span>
+                  <div id="familyAttemptDots" style="display: flex; gap: 6px;"></div>
+                </div>
+                <div id="familyChallengeResult" style="font-size: 13px; font-weight: 600; min-height: 20px; margin-top: 10px;"></div>
+              </div>
+              <button class="btn btn-secondary" onclick="declineTransaction()" style="margin-top: 4px;">Decline Transaction</button>
+            </div>
+
           </div>
         </div>
 
